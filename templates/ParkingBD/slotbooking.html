@@ -1,0 +1,149 @@
+{% extends 'ParkingBD/base.html' %}
+{%load crispy_forms_tags %}
+
+{% block title %}
+Booking Form
+{% endblock title %}
+{% block base %}
+
+<center>
+    <p class="text-xl font-semibold m-4">
+        Booking form:
+    </p>
+</center>
+{% if user.is_authenticated %}
+
+
+{% if user.is_authenticated %}
+
+<div class="m-auto rounded-xl border-4 shadow-lg p-4 m-auto w-10/12 max-w-24">
+    <p class="text-center text-xl">Slot Name: {{slot.garage_name}}</p>
+<br><br>
+
+    <form method="post">
+        {% csrf_token %}
+<div class="grid xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 2xl:grid-cols-2  gap-6">
+    <div>
+        <div class="form-group" id="div_id_garage"> <label class="requiredField" for="id_garage">
+                Garage Name<span class="asteriskField">*</span> </label>
+            <div> <select class="select form-control" id="id_garage" name="garage" required="">
+                    <option value="{{slot.id}}">{{slot.garage_name}}</option>
+                </select> </div>
+        </div>
+        <div class="form-group" id="div_id_owner"> <label class="requiredField" for="id_owner">
+                Owner<span class="asteriskField">*</span> </label>
+            <div> <select class="select form-control" id="id_owner" name="owner" required="">
+                    <option value="{{slot.owner.id}}">{{slot.owner.username}}</option>
+                </select> </div>
+        </div>
+        <div class="form-group" id="div_id_customer"> <label class="requiredField" for="id_customer">
+                Customer<span class="asteriskField">*</span> </label>
+            <div> <select class="select form-control" id="id_customer" name="customer" required="">
+                    <option value="{{user.id}}">{{user.username}}</option>
+                </select> </div>
+        </div>
+        <div class="form-group" id="div_id_customer_address"> <label class="requiredField" for="id_customer_address">
+                Customer address<span class="asteriskField">*</span> </label>
+            <div> <input class="textinput textInput form-control" id="id_customer_address" maxlength="100"
+                    name="customer_address" required="" type="text"> </div>
+        </div>
+        <div class="form-group" id="div_id_phone_number"> <label class="requiredField" for="id_phone_number">
+                Phone number<span class="asteriskField">*</span> </label>
+            <div> {% if user.profile.phone %}
+                <input id="id_phone_number" maxlength="20" name="phone_number" required="" type="text"
+                    value="{{user.profile.phone}}">
+                {% else %}
+                <input id="id_phone_number" maxlength="20" name="phone_number" required="" type="text"
+                    placeholder="Must fill this field">
+                {% endif %}
+            </div>
+        </div>
+        <div class="form-group" id="div_id_vehice_number"> <label class="requiredField" for="id_vehice_number">
+                Vehice number<span class="asteriskField">*</span> </label>
+            <div> <input class="textinput textInput form-control" id="id_vehice_number" maxlength="50"
+                    name="vehice_number" required="" type="text"> </div>
+        </div>
+        <div class="form-group" id="div_id_vehicle_type"> <label class="requiredField" for="id_vehicle_type">
+                Vehicle type<span class="asteriskField">*</span> </label>
+            <div> <select class="select form-control" id="id_vehicle_type" name="vehicle_type">
+                    {% if slot.bike_slot > 0 %}
+                    <option value="Bike">Bike</option>
+                    {% endif %}
+                    {% if slot.car_slot > 0 %}
+                    <option selected="" value="Car">Car</option>
+                    {% endif %}
+                    {% if slot.bicycle_slot > 0 %}
+                    <option value="Bicycle">Bicycle</option>
+                    {% endif %}
+                </select> </div>
+        </div>
+</div>
+<div>
+
+
+        <div class="form-group" id="div_id_image_of_necesssary_papers"> <label class=""
+                for="id_image_of_necesssary_papers">
+                Image of necesssary papers(Optional)
+            </label>
+            <div> <input accept="image/*" class="clearablefileinput form-control-file"
+                    id="id_image_of_necesssary_papers" name="image_of_necesssary_papers" type="file"> </div>
+        </div>
+        <div class="form-group" id="div_id_type_of_booking"> <label class="requiredField" for="id_type_of_booking">
+                Type of booking<span class="asteriskField">*</span> </label>
+            <div>
+                <div class="text-sm">
+                    <p>[ Rate:</p>
+                    {% if slot.allow_hourly == True %}
+                    <p>{{slot.hourly_cost}} Tk./hour</p>
+                    {% endif %}
+                    {% if slot.allow_daily == True %}
+                    <p>{{slot.daily_cost}} Tk./day</p>
+                    {% endif %}
+                    {% if slot.allow_monthly == True %}
+                    <p>{{slot.monthly_cost}} Tk./month</p>
+                    {% endif %}]
+
+                </div>
+                <select class="select form-control" id="id_type_of_booking" name="type_of_booking">
+                    <option selected="" value="Hour">Hour</option>
+                    <option value="Day">Day</option>
+                    <option value="Month">Month</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group" id="div_id_booking_quantity"> <label class="requiredField" for="id_booking_quantity">
+                Booking quantity<span class="asteriskField">*</span> </label>
+            <div> <input class="numberinput form-control" id="id_booking_quantity" name="booking_quantity" required=""
+                    type="number" min="0" value="1"> </div>
+        </div>
+        <div class="form-group" id="div_id_start_time"> <label class="requiredField" for="id_start_time">
+                Start time<span class="asteriskField">*</span> </label>
+            <div> <input class="textinput textInput form-control" id="id_start_time" maxlength="25" name="start_time"
+                    required="" type="time"> </div>
+        </div>
+        <div class="form-group" id="div_id_start_date"> <label class="requiredField" for="id_start_date">
+                Start date<span class="asteriskField">*</span> </label>
+            <div> <input class="textinput textInput form-control" id="id_start_date" maxlength="25" name="start_date"
+                    required="" type="date"> </div>
+        </div>
+
+        <input class="btn btn-info bg-info" type="submit"
+            value="submit">
+
+
+        </div>
+    </div>
+    </form>
+
+
+</div>
+{% else %}
+
+{% include 'ParkingBD/loginRequest.html' %}
+
+{% endif %}
+{% else %}
+{% include 'ParkingBD/loginRequest.html'%}
+{% endif %}
+{% endblock base %}

@@ -1,0 +1,5 @@
+env/
+Backups/
+appVersions/
+TaskReminder.txt
+testpython.py

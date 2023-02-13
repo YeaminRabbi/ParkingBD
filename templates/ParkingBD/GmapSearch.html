@@ -1,0 +1,49 @@
+{% extends 'ParkingBD/base.html' %}
+{% block title %}
+Google Map
+{% endblock title %}
+{% block base %}
+<script type="text/javascript"
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBm0bpe_luPll4jHCgBgTsuOHI06eikwGA"></script>
+<script type="text/javascript">
+    navigator.geolocation.getCurrentPosition(success, failure);
+    function success(position) {
+        var myLat = position.coords.latitude;
+        var myLong = position.coords.longitude;
+        var coords = new google.maps.LatLng(myLat, myLong);
+        var mapOptions = {
+            center: coords,
+            zoom: 14,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+        var marker = new google.maps.Marker({
+            position: coords,
+            map: map,
+        });
+
+        const popupcontent = new google.maps.InfoWindow({
+                    content: "You are here!"
+                });
+                google.maps.event.addListener(marker, "click", (function (m) {
+                    return function () {popupcontent.open(map, m);}
+                })(marker));
+                document.getElementById('lat').innerHTML = myLat;
+                document.getElementById('long').innerHTML = myLong;
+    }
+    function failure() {
+        alert("Sorry, your browser does not support geolocation services.");
+    }
+</script>
+
+<div>
+    <p class="text-center font-semibold text-2xl text-blue-500 m-4">Find parkings around your place</p>
+    <div id="map" style="height: 480px; width:60%px;  margin: auto;" class="m-2 border-2 rounded-md shadow-xl">
+    </div>
+    <br><br>
+    <div>
+        <p id="lat"></p>
+        <p id="long"></p>
+    </div>
+</div>
+{% endblock base %}

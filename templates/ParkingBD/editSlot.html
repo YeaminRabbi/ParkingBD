@@ -1,0 +1,99 @@
+{% extends 'ParkingBD/base.html' %}
+{% block title %}
+Edit Slot
+{% endblock title %}
+{% load widget_tweaks %}
+{% block base %}
+
+<center>
+    <p class="text-xl font-semibold">
+        Edit Slot:
+    </p>
+</center>
+
+{% if user.is_authenticated %}
+
+
+
+<!-- js for long, lat, dropdown, datepicker, checkbox, owner, booking needs to fixed -->
+
+
+{% if slot.owner.id == user.id %}
+<div class="m-auto font-semibold rounded-xl border-4 shadow-lg p-4 m-auto w-10/12 max-w-24">
+    <label class="text-lg font-semibold" for="{{ field.id_for_label }}">Location:</label>
+    <p>{{slot.location}}, {{slot.locality}}, {{slot.locality.division}}</p>
+    <br>
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="grid xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 2xl:grid-cols-2  gap-6">
+    <div>
+        <label class="text-lg font-semibold" for="id_garage_name">Garage name</label>
+        <p><input class="form-control" id="id_garage_name" maxlength="100" name="garage_name" required="" type="text" value="habijabi"></p>
+        <label class="text-lg font-semibold" for="id_phone_number">Phone number</label>
+        <p><input class="form-control" id="id_phone_number" maxlength="15" name="phone_number" required="" type="text" value="+8801771381929"></p>
+        <label class="text-lg font-semibold" for="id_other_number">Other number</label>
+        <p><input class="form-control" id="id_other_number" maxlength="15" name="other_number" type="text"></p>
+        <label class="text-lg font-semibold" for="id_description">Description</label>
+        <p><input class="form-control" id="id_description" maxlength="500" name="description" required="" type="text" value="No description"></p>
+        <label class="text-lg font-semibold" for="id_photo">Photo</label>
+        <p>Currently: <a href="/media/garage_photos/images_TxjiUQk.jpg">garage_photos/images_TxjiUQk.jpg</a><br>
+        Change:
+        <input accept="image/*" class="form-control" id="id_photo" name="photo" type="file"></p>
+        <label class="text-lg font-semibold" for="id_place_category">Place category</label>
+        <p><select class="form-control" id="id_place_category" name="place_category">
+        <option selected="" value="Commercial">Commercial</option>
+        <option value="Residential">Residential</option>
+        </select></p>
+        <label class="text-lg font-semibold" for="id_bike_slot">Bike slot</label>
+        <p><input class="form-control" id="id_bike_slot" name="bike_slot" required="" type="number" min="0" value="2"></p>
+        <label class="text-lg font-semibold" for="id_car_slot">Car slot</label>
+        <p><input class="form-control" id="id_car_slot" name="car_slot" required="" type="number" min="0" value="2"></p>
+        <label class="text-lg font-semibold" for="id_bicycle_slot">Bicycle slot</label>
+        <p><input class="form-control" id="id_bicycle_slot" name="bicycle_slot" required="" type="number" min="0" value="1"></p>
+
+        
+</div>
+<div>
+
+        <label class="text-lg font-semibold" for="id_allow_monthly">Allow monthly</label>
+        <p><input checked="" class="px-2" id="id_allow_monthly" name="allow_monthly" type="checkbox"></p>
+        <label class="text-lg font-semibold" for="id_monthly_cost">Monthly cost</label>
+        <p><input class="form-control" id="id_monthly_cost" name="monthly_cost" required="" step="any" type="number" min="0" value="7000.0"></p>
+
+
+        <label class="text-lg font-semibold" for="id_allow_hourly">Allow hourly</label>
+        <p><input checked="" class="px-2" id="id_allow_hourly" name="allow_hourly" type="checkbox"></p>
+        <label class="text-lg font-semibold" for="id_hourly_cost">Hourly cost</label>
+        <p><input class="form-control" id="id_hourly_cost" name="hourly_cost" required="" step="any" type="number" min="0" value="70.0"></p>
+        <label class="text-lg font-semibold" for="id_allow_daily">Allow daily</label>
+        <p><input checked="" class="px-2" id="id_allow_daily" name="allow_daily" type="checkbox"></p>
+        <label class="text-lg font-semibold" for="id_daily_cost">Daily cost</label>
+        <p><input class="form-control" id="id_daily_cost" name="daily_cost" required="" step="any" type="number" min="0" value="700.0"></p>
+        <label class="text-lg font-semibold" for="id_opening_time">Opening time</label>
+        <p><input class="form-control" id="id_opening_time" name="opening_time" required="" type="text" value="23:13:00"></p>
+        <label class="text-lg font-semibold" for="id_close_time">Close time</label>
+        <p><input class="form-control" id="id_close_time" name="close_time" required="" type="text" value="15:11:00"></p>
+        <label class="text-lg font-semibold" for="id_CCTV">CCTV</label>
+        <input checked="" class="px-2" id="id_CCTV" name="CCTV" type="checkbox"><br>
+        <label class="text-lg font-semibold" for="id_Gaurd">Gaurd</label>
+        <input checked="" class="px-2" id="id_Gaurd" name="Gaurd" type="checkbox"><br>
+        <label class="text-lg font-semibold" for="id_Indoor">Indoor</label>
+        <input checked="" class="px-2" id="id_Indoor" name="Indoor" type="checkbox"><br>
+        <br>
+        <input class="text-white font-semi-bold p-1 m-2 px-3 rounded-md m-auto bg-blue-500" type="submit" value="Update">
+        
+        </div>
+    </div>
+        </form>
+</div>
+    {% else %}
+    <center>
+        <p class='text-red-500'>This page doesn't belong to you</p>
+    </center>
+
+    {% endif %}
+{% else %}
+{% include 'ParkingBD/loginRequest.html'%}
+{% endif %}
+{% endblock base %}

@@ -1,0 +1,206 @@
+{% extends 'ParkingBD/base.html' %}
+{% block title %}
+Detail
+{% endblock title %}
+{% block base %}
+
+
+<p class="text-center text-2xl font-semibold">Request Information:</p>
+{% comment %} {{booking.garage.car_slot}} {% endcomment %}
+
+{% if user.is_authenticated %}
+
+
+<div class="grid place-items-center">
+  <div class="rounded-md mx-4 max-w-xl bg-white shadow-xl my-12 overflow-hidden">
+    <img class="max-w-full mx-auto" src="{{booking.garage.photo.url}}" alt="Deer">
+    
+    <div class="py-6 px-8">
+<i class="fa fa-star" aria-hidden="true"></i>
+    <span>Rating:{{booking.garage.avgRating}} </span>
+    <span> ({{booking.garage.ratingCount}}) </span>
+    <br>
+      <span class="uppercase text-gray-800 text-lg">{{booking.garage.location}}, {{booking.garage.locality}},
+        {{booking.garage.locality.division}}</span>
+      <h1 class="text-gray-800 font-bold text-2xl">{{booking.garage.garage_name}}</h1>
+      <p class="text-gray-600 text-base mt-3.5 mb-4">{{booking.garage.description}}.</p>
+    </div>
+
+    {% if booking.customer.id == request.user.id %}
+    <div class="flex justify-between w-full items-center py-3 px-8 border-t border-gray-300">
+      <div class="flex items-center">
+        <p class="text-indigo-600">Garage Owner: </p>
+      </div>
+      <p>{{booking.garage.owner}}</p>
+    </div>
+    <div class="flex justify-between w-full items-center py-3 px-8 border-t border-gray-300">
+      <div class="flex items-center">
+        <p class="text-indigo-600">Contact Number: </p>
+      </div> 
+      <p>{{booking.garage.phone_number}}</p>
+    </div>
+
+    {% elif booking.owner.id == request.user.id %}
+
+    <div class="flex justify-between w-full items-center py-3 px-8 border-t border-gray-300">
+      <div class="flex items-center">
+        <p class="text-indigo-600">Customer: </p>
+      </div>
+      <p>{{booking.customer.username}}</p>
+    </div>
+    <div class="flex justify-between w-full items-center py-3 px-8 border-t border-gray-300">
+      <div class="flex items-center">
+        <p class="text-indigo-600">Contact Number: </p>
+      </div>
+      <p>{{booking.phone_number}}</p>
+    </div>
+    <div class="flex justify-between w-full items-center py-3 px-8 border-t border-gray-300">
+      <div class="flex items-center">
+        <p class="text-indigo-600">Customer Address: </p>
+      </div>
+      <p>{{booking.customer_address}}</p>
+    </div>
+    <div class="flex justify-between w-full items-center py-3 px-8 border-t border-gray-300">
+      <div class="flex items-center">
+        <p class="text-indigo-600">Vehicle Type: </p>
+      </div>
+      <p>{{booking.vehicle_type}}</p>
+    </div>
+    <div class="flex justify-between w-full items-center py-3 px-8 border-t border-gray-300">
+      <div class="flex items-center">
+        <p class="text-indigo-600">Vehicle Number: </p>
+      </div>
+      <p>{{booking.vehice_number}}</p>
+    </div>
+    {% if booking.image_of_necesssary_papers %}
+    <div class="flex justify-between w-full items-center py-3 px-8 border-t border-gray-300">
+      <div class="flex items-center">
+        <p class="text-indigo-600">Proof  paper: </p>
+      </div>
+      <img scr="{{booking.image_of_necesssary_papers.url}}">
+    </div>
+    {% endif %}
+
+    {% endif %}
+
+    <div class="flex justify-between w-full items-center py-3 px-8 border-t border-gray-300">
+      <div class="flex items-center">
+        <p class="text-indigo-600">Vehicle Type: </p>
+      </div>
+      <p>{{booking.vehicle_type}}</p>
+    </div>
+    <div class="flex justify-between w-full items-center py-3 px-8 border-t border-gray-300">
+      <div class="flex items-center">
+        <p class="text-indigo-600">Boking Type Period: </p>
+      </div>
+      <p>{{booking.type_of_booking}}</p>
+    </div>
+    <div class="flex justify-between w-full items-center py-3 px-8 border-t border-gray-300">
+      <div class="flex items-center">
+        <p class="text-indigo-600">Booking Quantity: </p>
+      </div>
+      <p>{{booking.booking_quantity}}</p>
+    </div>
+    <div class="flex justify-between w-full items-center py-3 px-8 border-t border-gray-300">
+      <div class="flex items-center">
+        <p class="text-indigo-600">Boking Cost (Price x Quantity): </p>
+      </div>
+      {% if booking.type_of_booking == 'Hour' %}
+      <p> {{booking.garage.hourly_cost}}Tk x {{booking.booking_quantity}}  = {{totalAmount}} Tk.</p>
+      {% endif %}
+      {% if booking.type_of_booking == 'Day' %}
+      <p> {{booking.garage.daily_cost }}Tk x {{booking.booking_quantity}}  = {{totalAmount}} Tk.</p>
+      {% endif %}
+      {% if booking.type_of_booking == 'Month' %}
+      <p> {{booking.garage.monthly_cost }}Tk x {{booking.booking_quantity}}  = {{totalAmount}} Tk.</p>
+      {% endif %}
+
+    </div>
+    <div class="flex justify-between w-full items-center py-3 px-8 border-t border-gray-300">
+      <div class="flex items-center">
+        <p class="text-indigo-600">Your Parking date: </p>
+      </div>
+      <p>{{booking.start_date}}</p>
+    </div>
+    
+    <div class="flex justify-between w-full items-center py-3 px-8 border-t border-gray-300">
+      <div class="flex items-center">
+        <p class="text-indigo-600">Your Parking time: </p>
+      </div>
+      <p>{{booking.start_time}}</p>
+    </div>
+
+    <div class="flex justify-between w-full items-center py-3 px-8 border-t border-gray-300">
+      <div class="flex items-center">
+        <p class="text-indigo-600">
+          Garage Schedule
+        </p>
+      </div>
+      <p>
+      <div class="text-md font-semibold text-green-600 p-1 text-center">
+        <span>Openning:</span>
+        <span class="text-slate-800">{{booking.garage.opening_time}}</span>
+        <br>
+        <span>Clossing:</span>
+        <span class="text-slate-800">{{booking.garage.close_time}}</span>
+      </div>
+      </p>
+    </div>
+
+
+    <div class="flex justify-between w-full items-center py-3 px-8 border-t border-gray-300">
+      <div class="flex items-center">
+        <p class="text-red-500 font-semibold">Booking status: </p>
+      </div>
+      {% if booking.status == 0 %}
+      <p>Pending</p>
+      {% elif booking.status == 1 %}
+      <p>Accepted</p>
+      {% if booking.customer == user %}
+    <a href="{% url 'bkashHome' booking.id %}" class="text-blue-500 text-xl text-center font-semibold p-2 m-4 shadow-md border-2 rounded-md hover:bg-blue-500 hover:text-white duration-200 cursor-pointer">
+        Payment
+    </a> 
+    {% endif %}
+      {% elif booking.status == 2 %}
+      <p>Rejected</p>
+      {% elif booking.status == 3 %}
+      <p>Completed</p>
+      {% elif booking.status == 7 %}
+      <p>Completed</p>
+      {% endif %}
+    </div>
+
+
+    <div class="flex justify-between w-full items-center py-3 px-8 border-t border-gray-300">
+      <div class="flex items-center">
+        <a href="{% url 'slotDetail' booking.garage.id %}" class="btn btn-info text-white">View Post</a>
+
+      
+        {% if booking.owner.id == request.user.id %}
+
+        {% if booking.status == 0 %}
+        <a href="{% url 'bookingAccept' booking.pk %}" class="btn btn-success text-white m-2">Accept</a>
+        <a href="{% url 'bookingReject' booking.pk %}" class="btn btn-danger text-white m-2">Reject</a>
+        <a href="{% url 'editSlot' booking.pk %}" class="btn btn-warning text-white m-2">Edit Slot</a>
+        
+       
+        {% elif booking.status == 1 %}
+        <a href="{% url 'bookingComplete' booking.pk %}" class="btn btn-success text-white">Complete</a>    
+{% endif %}
+        {% elif booking.customer.id == request.user.id %}
+    
+        {% if booking.status == 0 %}
+        <a href="{% url 'cancelBooking' booking.pk %}" class="btn btn-danger text-white m-2">Cancel</a>
+        {% endif %}
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</div>
+{% else %}
+{% include 'ParkingBD/loginRequest.html'%}
+{% endif %}
+
+
+{% endblock base %}

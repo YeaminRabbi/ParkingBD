@@ -1,0 +1,309 @@
+{% extends 'ParkingBD/base.html' %}
+
+{% block title %}
+Post Parking
+{% endblock title %}
+{% load static %}
+{% comment %} {% load widget_tweaks %} {% endcomment %}
+{% block base %}
+
+
+
+
+
+<!-- Dependend dropdown script -->
+<script>
+  $(document).ready(function () {
+    var $division = $('#id_division'),
+      $locality = $('#id_locality'),
+      $options = $locality.find('option');
+    $division.on('change', function () {
+      $locality.html($options.filter('[divId="' + this.value + '"]'));
+    }).trigger('change');
+  });
+
+  $(document).ready(function () {
+    $("division").locality({});
+    $("locality").locality({});
+  });
+</script>
+<!-- end of dropdown script -->
+
+{% if messages %}
+<ul class="messages text-center text-white">
+    {% for message in messages %}
+    <li class="" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|safe }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+</div>
+
+<!-- form modification start -->
+
+
+<!-- form modification end -->
+
+
+  <div class="p-4 border-2 mx-auto rounded-lg shadow-lg w-4/5 xl:w-4/5 md:w-4/5 " id="postParkingForm">
+    <p class="text-2xl font-semibold text-center">Post Your Garage!</p>
+    <br>
+    {% if user.is_authenticated %}
+
+
+    <hr>
+    <br>
+    <form enctype="multipart/form-data" method="post">
+      {% csrf_token %}
+      <div id="form divider" class="grid xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 2xl:grid-cols-2  gap-6">
+
+        <div class="">
+
+          <div class="form-group" id="div_id_division"> <label class="requiredField" for="id_division">
+              Division<span class="asteriskField">*</span> </label>
+            <div>
+              <select class="select form-control" id="id_division" name="division" required="">
+                <option selected="" value="">---------</option>
+                {% for div in division %}
+                <option value="{{div.id}}" selfId="{{div.id}}">{{div}}</option>
+                {% endfor %}
+            </div>
+          </div>
+          <div class="form-group" id="div_id_locality"> <label class="requiredField" for="id_locality">
+              Locality<span class="asteriskField">*</span> </label>
+            <div> <select class="select form-control" id="id_locality" name="locality" required="">
+                <option selected="" value="">---------</option>
+                {% for loc in city %}
+                <option value="{{loc.id}}" divId="{{loc.division.id}}">{{loc}}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="form-group" id="div_id_location"> <label class="requiredField" for="id_location">
+                Location<span class="asteriskField">*</span> </label>
+              <div>
+                <input class="textinput textInput form-control pac-target-input" id="id_location" name="location"
+                  required="" type="text" placeholder="Enter a location">
+                <input type="hidden" id="loc_lat" />
+                <input type="hidden" id="loc_long" />
+
+              </div>
+            </div>
+            
+            </div>
+            <div class="form-group" id="div_id_garage_name"> <label class="requiredField" for="id_garage_name">
+                Garage name<span class="asteriskField">*</span> </label>
+              <div> <input class="textinput textInput form-control" id="id_garage_name" maxlength="100"
+                  name="garage_name" required="" type="text"> </div>
+            </div>
+            <div class="form-group" id="div_id_phone_number"> <label class="requiredField" for="id_phone_number">
+                Phone number<span class="asteriskField">*</span> </label>
+              <div> {% if user.profile.phone %}
+                <input class="form-control" id="id_phone_number" value="{{user.profile.phone}}" maxlength="15"
+                  name="phone_number" required="" type="text">
+                {% else %}
+                <input class="form-control" id="id_phone_number" placeholder="This field can not be empty!"
+                  maxlength="15" name="phone_number" required="" type="text">
+                {% endif %}
+              </div>
+            </div>
+            <div class="form-group" id="div_id_other_number"> <label class="" for="id_other_number">
+                Other number
+              </label>
+              <div> <input class="textinput textInput form-control" id="id_other_number" maxlength="15"
+                  name="other_number" type="text"> </div>
+            </div>
+            <div class="form-group" id="div_id_owner"> <label class="requiredField" for="id_owner">
+                Owner<span class="asteriskField">*</span> </label>
+              <div> <select id="id_owner" name="owner" required="">
+                  <option value="{{user.id}}">{{user.username}}</option>
+                </select> </div>
+            </div>
+            <div class="form-group" id="div_id_description"> <label class="requiredField" for="id_description">
+                Description<span class="asteriskField">*</span> </label>
+              <div> <textarea class="textinput textInput form-control" id="id_description" maxlength="500"
+                  name="description" required="" type="text" value="No description"> </div>
+            </div>
+            <div class="form-group" id="div_id_photo"> <label class="requiredField" for="id_photo">
+                Photo<span class="asteriskField">*</span> </label>
+              <div> <input accept="image/*" class="clearablefileinput form-control-file" id="id_photo" name="photo"
+                  required="" type="file"> </div>
+            </div>
+            <div class="form-group" id="div_id_place_category"> <label class="requiredField" for="id_place_category">
+                Place category<span class="asteriskField">*</span> </label>
+              <div> <select class="select form-control" id="id_place_category" name="place_category">
+                  <option selected="" value="Commercial">Commercial</option>
+                  <option value="Residential">Residential</option>
+                </select> </div>
+            </div>
+ 
+
+          <div class="form-group" id="div_id_bike_slot"> <label class="requiredField" for="id_bike_slot">
+              Bike slot<span class="asteriskField">*</span> </label>
+            <div> <input class="numberinput form-control" id="id_bike_slot" name="bike_slot" required="" type="number"
+                min="0" value="0"> </div>
+          </div>
+         
+        </div>
+
+        <div class="">
+
+
+          <div class="form-group" id="div_id_car_slot"> <label class="requiredField" for="id_car_slot">
+              Car slot<span class="asteriskField">*</span> </label>
+            <div> <input class="numberinput form-control" id="id_car_slot" name="car_slot" required="" type="number"
+                min="0" value="0"> </div>
+          </div>
+          <div class="form-group" id="div_id_bicycle_slot"> <label class="requiredField" for="id_bicycle_slot">
+              Bicycle slot<span class="asteriskField">*</span> </label>
+            <div> <input class="numberinput form-control" id="id_bicycle_slot" name="bicycle_slot" required=""
+                type="number" min="0" value="0"> </div>
+          </div>
+          <div class="form-group">
+            <div class="form-check" id="div_id_allow_monthly"> <input checked="" class="checkboxinput form-check-input"
+                id="id_allow_monthly" name="allow_monthly" type="checkbox">
+              <label class="form-check-label" for="id_allow_monthly">
+                Allow monthly
+              </label>
+            </div>
+          </div>
+          <div class="form-group" id="div_id_monthly_cost"> <label class="requiredField" for="id_monthly_cost">
+              Monthly cost<span class="asteriskField">*</span> </label>
+            <div> <input class="numberinput form-control" id="id_monthly_cost" name="monthly_cost" required=""
+                step="any" type="number" min="0" value="0"> </div>
+          </div>
+          <div class="form-group">
+            <div class="form-check" id="div_id_allow_hourly"> <input checked="" class="checkboxinput form-check-input"
+                id="id_allow_hourly" name="allow_hourly" type="checkbox"> <label class="form-check-label"
+                for="id_allow_hourly">
+                Allow hourly
+              </label> </div>
+          </div>
+          <div class="form-group" id="div_id_hourly_cost"> <label class="requiredField" for="id_hourly_cost">
+              Hourly cost<span class="asteriskField">*</span> </label>
+            <div> <input class="numberinput form-control" id="id_hourly_cost" name="hourly_cost" required="" step="any"
+                type="number" min="0" value="0"> </div>
+          </div>
+          <div class="form-group">
+            <div class="form-check" id="div_id_allow_daily"> <input checked="" class="checkboxinput form-check-input"
+                id="id_allow_daily" name="allow_daily" type="checkbox"> <label class="form-check-label"
+                for="id_allow_daily">
+                Allow daily
+              </label> </div>
+          </div>
+          <div class="form-group" id="div_id_daily_cost"> <label class="requiredField" for="id_daily_cost">
+              Daily cost<span class="asteriskField">*</span> </label>
+            <div> <input class="numberinput form-control" id="id_daily_cost" name="daily_cost" required="" step="any"
+                type="number" min="0" value="0"> </div>
+          </div>
+          <div class="form-group" id="div_id_opening_time"> <label class="requiredField" for="id_opening_time">
+              Opening time<span class="asteriskField">*</span> </label>
+            <div> <input class="timeinput form-control" id="id_opening_time" name="opening_time" required=""
+                type="time">
+            </div>
+          </div>
+          <div class="form-group" id="div_id_close_time"> <label class="requiredField" for="id_close_time">
+              Close time<span class="asteriskField">*</span> </label>
+            <div> <input class="timeinput form-control" id="id_close_time" name="close_time" required="" type="time">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-check" id="div_id_CCTV"> <input class="checkboxinput form-check-input" id="id_CCTV"
+                name="CCTV" type="checkbox"> <label class="form-check-label" for="id_CCTV">
+                CCTV
+              </label> </div>
+          </div>
+          <div class="form-group">
+            <div class="form-check" id="div_id_Gaurd"> <input class="checkboxinput form-check-input" id="id_Gaurd"
+                name="Gaurd" type="checkbox"> <label class="form-check-label" for="id_Gaurd">
+                Gaurd
+              </label> </div>
+          </div>
+          <div class="form-group">
+            <div class="form-check" id="div_id_Indoor"> <input class="checkboxinput form-check-input" id="id_Indoor"
+                name="Indoor" type="checkbox"> <label class="form-check-label" for="id_Indoor">
+                Indoor
+              </label> </div>
+          </div>
+          
+      <p>
+        <input hidden='true' id="id_lat" name="lat" step="any" type="number">
+        </p>
+        <p>
+        <input id="id_lng" hidden='true'  name="lng" step="any" type="number">
+        </p>
+        <p>
+        <input id="id_rating" name="rating" hidden='true'  required="" type="number" value="0">
+        </p>
+        <p>
+        <input id="id_ratingCount" name="ratingCount" hidden='true'  required="" type="number" value="0">
+        </p>
+        <p>
+        <input id="id_avgRating" hidden='true'  name="avgRating" required="" step="any" type="number" value="0">
+        </p>
+
+          <label class="requiredField" for="id_postalCode">PostalCode<span class="asteriskField">*</span> :</label>
+<select required='true' id="id_postalCode" name="postalCode">
+  <option selected="" value="1">1000</option>
+  {% for post in postal  %}
+  <option value="{{post.id}}">{{post}}</option>
+  {% endfor %}
+  </select>
+  <br>
+  <br>
+
+
+          <input class="btn btn-success bg-success" type="submit" value="submit">
+        </div>
+
+      </div>
+    </form>
+  </div>
+</div>
+
+
+
+
+<!-- Geolocation api platform scripts -->
+{% comment %} 
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script
+  src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyBm0bpe_luPll4jHCgBgTsuOHI06eikwGA"></script>
+
+<script type="text/javascript">
+  var searchInput = 'id_location';
+
+  $(document).ready(function () {
+    var autocomplete;
+    autocomplete = new google.maps.places.Autocomplete((document.getElementById(searchInput)), {
+      types: ['geocode'],
+    });
+
+    autocomplete.setComponentRestrictions({
+      country: ["BD"]
+    });
+
+    google.maps.event.addListener(autocomplete, 'place_changed', function () {
+      var near_place = autocomplete.getPlace();
+      document.getElementById('loc_lat').value = near_place.geometry.location.lat();
+      document.getElementById('loc_long').value = near_place.geometry.location.lng();
+
+      document.getElementById('latitude_view').innerHTML = near_place.geometry.location.lat();
+      document.getElementById('longitude_view').innerHTML = near_place.geometry.location.lng();
+    });
+  });
+
+  $(document).on('change', '#' + searchInput, function () {
+    // document.getElementById('latitude_input').value = "";
+    // document.getElementById('longitude_input').value = "";
+    document.getElementById('latitude_view').innerHTML = "";
+    document.getElementById('longitude_view').innerHTML = "";
+  });
+
+</script> {% endcomment %}
+
+
+<!-- end of Geolocation api platform scripts -->
+{% else %}
+{% include 'ParkingBD/loginRequest.html'%}
+{% endif %}
+{% endblock base %}

@@ -1,0 +1,28 @@
+{% extends 'ParkingBD/base.html' %}
+{% block title %}
+Booking types
+{% endblock title %}
+{% block base %}
+
+
+
+<p class="text-center text-2xl font-bold m-2">Select an option:</p>
+{% if user.is_authenticated %}
+
+<div class="flex flex-col p-4 m-auto border-4 rounded-xl w-8/12 max-w-[22rem] shadow-lg">
+    <div class="p-4 text-xl font-semibold m-2 text-center text-white bg-blue-500 rounded-xl" ><a href="{% url 'myBookings'  %}"> My Bookings</a></div>
+
+    <div class="p-4 text-xl font-semibold m-2 text-center text-white bg-blue-400 rounded-xl"><a href="{% url 'bookingHistory' %}">Booking History</a></div>
+
+    <div class="p-4 text-xl font-semibold m-2 text-center text-white bg-green-600 rounded-xl"><a href="{% url 'myGarage' %}">My Garages</a></div>
+
+    <div class="p-4 text-xl font-semibold m-2 text-center text-white bg-green-500 rounded-xl"><a href="{% url 'RentList' %}">My Rent Requests</a></div>
+
+    <div class="p-4 text-xl font-semibold m-2 text-center text-white bg-green-400 rounded-xl"><a href="{% url 'rentHistory' %}">Rent History</a></div>
+</div>
+
+{% else %}
+{% include 'ParkingBD/loginRequest.html'%}
+{% endif %}
+
+{% endblock base %}

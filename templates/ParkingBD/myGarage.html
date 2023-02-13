@@ -1,0 +1,100 @@
+{% extends 'ParkingBD/base.html' %}
+{% block title %}
+My Garage
+{% endblock title %}
+{% block base %}
+
+        <p class="text-xl text-center">My Garages:</p>
+        {% if user.is_authenticated %}
+
+        <div class="row m-4">
+            {% for slot in garage %}
+            <div class="col-lg-4 col-md-6 col-xl-3 col-sm-12">
+              <!--test start-->
+              <div class="max-w-xs rounded-lg overflow-hidden shadow-lg m-2">
+                <img class="w-full h-64 object-cover object-center" src="{{slot.photo.url}}" alt="Sunset in the mountains">
+                <i class="fa fa-star" aria-hidden="true"></i>
+                <span>Rating:{{slot.avgRating}} </span>
+                <span> ({{slot.ratingCount}}) </span>
+    
+                <div class="px-6 py-4">
+                  <div class="font-bold text-xl mb-2">{{slot.garage_name}}</div>
+                  <p class="font-semibold">Location:</p>
+                  <p>{{slot.location}}, {{slot.locality}}, {{slot.locality.division}} </p>
+                  <p class="font-semibold text-lg ">Pricing</p>
+                  <div class="rent-price">
+                    {% if slot.allow_hourly == True %}
+                    <strong>{{slot.hourly_cost}} Tk.</strong><span class="mx-1">/</span>hour
+                    {% endif %}
+                  </div>
+                  <div class="rent-price">
+                    {% if slot.allow_daily == True %}
+                    <strong>{{slot.daily_cost}} Tk.</strong><span class="mx-1">/</span>daily
+                    {% endif %}
+                  </div>
+                  <div class="rent-price">
+                    {% if slot.allow_monthly == True %}
+                    <strong>{{slot.monthly_cost}} Tk.</strong><span class="mx-1">/</span>month
+                    {% endif %}
+                  </div>
+          
+                  <div class="d-block d-md-flex mb-3 border-bottom pb-3">
+                    <div class=" border-2 rounded-md p-1 m-1">
+                      <span><i class="fa fa-car" aria-hidden="true"></i></span>
+                      <span class="caption">Car slots:</span>
+                      <span class="number">{{slot.car_slot}}</span>
+                    </div>
+                    <div class=" border-2 rounded-md p-1 m-1">
+                      <span><i class="fa fa-motorcycle" aria-hidden="true"></i></span>
+                      <span class="caption">Bike slots:</span>
+                      <span class="number">{{slot.bike_slot}}</span>
+                    </div>
+                    <div class=" border-2 rounded-md p-1 m-1">
+                      <span><i class="fa fa-bicycle" aria-hidden="true"></i></span>
+                      <span class="caption">Bicycle slots:</span>
+                      <span class="number">{{slot.bicycle_slot}}</span>
+                    </div>
+                  </div>
+                  <div>
+                    <p class="font-semibold text-lg">Place type:</p>
+                    <p>{{slot.place_category}}</p>
+                    <hr>
+                    <div class="text-md font-semibold text-green-600 p-1 text-center">
+                      <span>Openning:</span>
+                      <span class="text-slate-800">{{slot.opening_time}}</span>
+                      <br>
+                      <span>Clossing:</span>
+                      <span class="text-slate-800">{{slot.close_time}}</span>
+                    </div>
+                    <HR>
+                    </HR>
+                    <div>
+                      <p class="font-semibold p-1 mx-2">Facilities:</p>
+                      {% if slot.CCTV %}
+                      <span class="p-1 mx-2">CCTV</span>
+                      {% endif %}
+                      {% if slot.Gaurd %}
+                      <span class="p-1 mx-2">Gaurd</span>
+                      {% endif %}
+                      {% if slot.Indoor %}
+                      <span class="p-1 mx-2">Indoor Garage</span>
+                      {% endif %}
+                    </div>
+                    <hr>
+          
+                    <div class="mt-8 flex justify-start items-center">
+                      <p><a href="{% url 'slotDetail' slot.id %}" class="btn btn-primary btn-sm">View Detail</a></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--test end-->
+            </div>
+            {% endfor %}
+          </div>
+          
+
+        {% else %}
+        {% include 'ParkingBD/loginRequest.html'%}
+        {% endif %}
+{% endblock base %}

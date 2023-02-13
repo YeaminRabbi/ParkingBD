@@ -1,0 +1,154 @@
+{% extends 'ParkingBD/base.html' %}
+{% block title %}
+Slot Detail
+{% endblock title %}
+{% block base %}
+
+<div class="w-4/5 p-2 mx-auto">
+    <!--test start-->
+    <div class="max-w-xl rounded-lg overflow-hidden shadow-lg m-2">
+        <img class="w-full h-64 object-cover object-center" src="{{slot.photo.url}}" alt="Sunset in the mountains">
+        <div class="px-6 py-4">
+            <i class="fa fa-star" aria-hidden="true"></i>
+            <span>Rating:{{avgRating}} ({{slot.ratingCount}}) </span>
+            <p class="text-xl font-semibold text-center m-2">{{slot.garage_name}}</p>
+
+            <p class="text-lg font-semibold">Description:</p>
+            <p>{{slot.description}}</p>
+            <p class="text-lg font-semibold">Location:</p>
+            <p>{{slot.locality.division}}, {{slot.locality}}, {{slot.location}}</p>
+            <p class="text-lg font-semibold">Place type:</p>
+            <p>{{slot.place_category}}</p>
+
+            <!-- facilities -->
+
+            <!-- slot schedule -->
+            <div class="text-md font-semibold text-green-600 p-1 text-center">
+                <span>Openning:</span>
+                <span class="text-slate-800">{{slot.opening_time}}</span>
+                <span>Clossing:</span>
+                <span class="text-slate-800">{{slot.close_time}}</span>
+            </div>
+        </div>
+        <hr>
+        <!-- costings -->
+        <div class="font-semibold px-4">
+            <p>Rate:</p>
+            {% if slot.allow_hourly == True %}
+            <p>{{slot.hourly_cost}} Tk./hour</p>
+            {% endif %}
+            {% if slot.allow_daily == True %}
+            <p>{{slot.daily_cost}} Tk./day</p>
+            {% endif %}
+            {% if slot.allow_monthly == True %}
+            <p>{{slot.monthly_cost}} Tk./month</p>
+            {% endif %}
+        </div>
+        <hr>
+        <!-- available slots -->
+        <div class=" px-4">
+            <p class="font-semibold">Available Slots:</p>
+            <p>
+                <span>
+                    <i class="fa fa-car" aria-hidden="true"></i>
+                </span>
+                <span class="caption">Car slots:</span>
+                <span class="number">{{slot.car_slot}}</span>
+            </p>
+            <p>
+                <span><i class="fa fa-motorcycle" aria-hidden="true"></i></span>
+                <span class="caption">Bike slots:</span>
+                <span class="number">{{slot.bike_slot}}</span>
+            </p>
+            <p>
+                <span>
+                    <i class="fa fa-bicycle" aria-hidden="true"></i>
+                </span>
+                <span class="caption">Bicycle slots:</span>
+                <span class="number">{{slot.bicycle_slot}}</span>
+            </p>
+        </div>
+        <hr>
+
+        <div class=" px-4">
+            <p class="font-semibold p-1 mx-2">Facilities:</p>
+            {% if slot.CCTV %}
+            <span class="p-1 mx-2">CCTV</span>
+            {% endif %}
+            {% if slot.Gaurd %}
+            <span class="p-1 mx-2">Gaurd</span>
+            {% endif %}
+            {% if slot.Indoor %}
+            <span class="p-1 mx-2">Indoor Garage</span>
+            {% endif %}
+        </div>
+
+        <!-- slot owner detail -->
+        <div class=" px-4">
+            <p class="text-lg font-semibold">Contact:</p>
+            <p>Garage Owner: {{slot.owner}}</p>
+            <p>Contact Number: {{slot.phone_number}}</p>
+            {% if slot.other_number %}
+            <p>Other Number: {{slot.other_number}}</p>
+            {% endif %}
+        </div>
+        <!-- booking button -->
+        <br>
+        {% if slot.owner.id == user.id %}
+        <center>
+
+            <a href="{% url 'editSlot' slot.pk %}"
+                class="text-white font-semi-bold p-2 m-2 px-3 rounded-md m-auto bg-orange-500">Edit Slot</a>
+
+            <a href="{% url 'deleteSlot' slot.pk %}"
+                class="text-white font-semi-bold p-2 m-2 px-3 rounded-md m-auto bg-red-500">Delete Slot</a>
+
+        </center>
+        {% else %}
+
+        <center>
+            <a href="{% url 'book_parking' slot.id %}" class="btn btn-success">Book
+                Now</a>
+        </center>
+        {% endif %}
+        <br>
+        <br>
+        <br>
+        <br>
+
+        <style>
+            li {
+                display: list-item;
+                list-style-position: inside;
+            }
+        </style>
+
+        <div id="reviews">
+            <p class="text-center text-2xl font-bold">Reviews:</p>
+            {% if review %}
+            <ol class="list-group list-group-numbered">
+                {% for review in review %}
+                <br>
+                <li class="list-group-item">
+                    <p class="text-lg font-semibold"><span>
+                            <img class="rounded-md w-10" src="{{review.customer.profile.avatar.url}}" alt="">
+                        </span>{{review.customer.username}}</p>
+                    <p class=""> <span class="text-sm font-semibold"> Comment: </span> {{review.review}}</p>
+                </li>
+                {% endfor %}
+            </ol>
+            {% else %}
+            <p class="text-center py-2">No reviews yet</p>
+            {% endif %}
+        </div>
+
+
+
+    </div>
+    <!--test end-->
+</div>
+
+
+
+
+{% endblock base %}

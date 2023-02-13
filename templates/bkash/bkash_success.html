@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}
+Success
+{% endblock title %}
+{% load static %}
+{% block base %}
+<div class="relative text-black w-[379px] m-auto block">
+    <img class="m-auto" src="{% static 'images/bkashImages/bkashSuccess.png' %}">
+    <p class="absolute text-center text-white font-semibold text-xl top-[14rem] right-[6rem]">Payment Complete!</p>
+    <a href="{% url 'all_bookings' %}" class="absolute text-lg text-black font-semibold  bottom-[4rem] right-[7.5rem]">Return to order</a>
+</div>
+{% endblock base %}

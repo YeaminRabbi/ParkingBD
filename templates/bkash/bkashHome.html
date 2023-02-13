@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+Payment
+{% endblock title %}
+{% block base %}
+<div class="text-center">
+<p>Total Amount: {{amount}} Tk</p>
+<p class="text-xl font-semibold">Available payment methods:</p>
+<br><br>
+<form method="post">
+    {% csrf_token %}
+<div class="grid grid-cols-2 w-10/12 m-auto">
+    <div>
+        <input type="radio" id="radio-1" name="payment-method" value="bkash"> 
+        <label for="radio-1">
+        <img class="w-8/12 cursor-pointer m-2 border-2 rounded-md " src="{% static 'images/bkashImages/bkashLogo.png' %}">
+        </label>
+    </div>
+    <div>
+        <input type="radio" id="radio-2" name="payment-method" value="cod"> 
+        <label for="radio-2">
+        <img class="w-8/12 cursor-pointer m-2 border-2 rounded-md " src="{% static 'images/bkashImages/cod.png' %}">
+        </label>
+    </div>
+</div>
+    <input class="btn btn-success" type="submit" value="PROCEED">
+</form>
+
+
+
+
+{% endblock base %}

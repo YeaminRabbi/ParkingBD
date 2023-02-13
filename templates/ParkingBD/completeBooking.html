@@ -1,0 +1,35 @@
+{% extends 'ParkingBD/base.html' %}
+{% block title %}
+Booking Complete
+{% endblock title %}
+{% block base %}
+
+<center>
+    <p class="text-xl font-semibold m-4">
+        Flag Complite:
+    </p>
+</center>
+{% if user.is_authenticated %}
+
+
+<center>
+<form method="post" class="border-4 p-4 m-4 rounded-xl shadow-lg w-10/12 max-w-[22rem]">
+   {% csrf_token %}
+  
+    <label for="id_status" class="text-2xl">Are you sure this deal is completed?</label>   
+    <div class="text-left text-lg font-semibold">
+     <p>Customer would be notified that the contact is over.</p>
+     <p class="text-green-500">Slot of required catagory would be vacant again.</p>
+     <p class="text-red-500">Marking this as complete would also consider that payment for this slot has been complete.</p>
+    </div>
+    
+    <p><input hidden="true" class="form-control" id="id_status" name="status" required="" type="number" value="3"></p>
+    <br>
+    <input class="btn btn-success" type="submit" value="Mark complete">
+    </form>
+</center>
+{% else %}
+{% include 'ParkingBD/loginRequest.html'%}
+{% endif %}
+
+{% endblock base %}

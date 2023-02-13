@@ -1,0 +1,266 @@
+{% extends 'ParkingBD/base.html' %}
+{% block title %}
+Search Parking
+{% endblock title %}
+{% block base %}
+
+
+
+<!-- Dependend dropdown script 
+<script>
+  $(document).ready(function () {
+    var $division = $('#id_division'),
+      $locality = $('#id_locality'),
+      $options = $locality.find('option');
+    $division.on('change', function () {
+      $locality.html($options.filter('[divId="' + this.value + '"]'));
+    }).trigger('change');
+  });
+</script>
+<script>
+  $(document).ready(function () {
+    $("division").locality({});
+    $("locality").locality({});
+  });
+</script>
+ end of dropdown script -->
+
+
+<!--search bar-->
+<div class="site-wrap" id="home-section">
+  <div class="hero" style="background-image: url('../media/images/hero_1_a.jpg');">
+
+    <div class="container">
+      <div class="row align-items-center justify-content-center">
+        <div class="col-lg-10">
+
+          <div class="row mb-5">
+            <div class="col-lg-7 intro">
+              <h1><strong>Book a Garage</strong> is within your finger tips.</h1>
+            </div>
+          </div>
+
+          <form class="trip-form" method="get">
+            {% csrf_token %}
+
+            <div class="flex-column w-3/5 m-auto">
+
+              <div>
+                <label class="text-lg font-semibold" for="id_location">Search using address, city or Garage Name:
+                </label>
+                <p><input class="form-control" id="id_location" name="area" type="text" placeholder="{{searched}}"></p>
+              </div>
+
+            </div>
+            <br>
+            <center>
+              <input type="submit" value="Search Now"
+                class="bg-blue-500 font-semibold text-white p-2 rounded-lg  hover:bg-blue-700">
+            </center>
+
+        </div>
+
+
+
+        </form>
+
+
+      </div>
+
+
+    </div>
+  </div>
+</div>
+</div>
+
+<!--searched items-->
+<div class="p-3 m-auto">
+  {% if result %}
+
+  <div class="row m-4">
+    {% for slot in result %}
+    <div class="col-lg-4 col-md-6 col-xl-3 col-sm-12">
+      <!--test start-->
+      <div class="max-w-xs rounded-lg overflow-hidden shadow-lg m-2">
+        <img class="w-full h-64 object-cover object-center" src="{{slot.photo.url}}" alt="Sunset in the mountains">
+        <i class="fa fa-star" aria-hidden="true"></i>
+        <span>Rating:{{slot.avgRating}} </span>
+        <span> ({{slot.ratingCount}}) </span>
+
+        <div class="px-6 py-4">
+          <div class="font-bold text-xl mb-2">{{slot.garage_name}}</div>
+          <p class="font-semibold">Location:</p>
+          <p>{{slot.location}}, {{slot.locality}}, {{slot.locality.division}} </p>
+          <p class="font-semibold text-lg ">Pricing</p>
+          <div class="rent-price">
+            {% if slot.allow_hourly == True %}
+            <strong>{{slot.hourly_cost}} Tk.</strong><span class="mx-1">/</span>hour
+            {% endif %}
+          </div>
+          <div class="rent-price">
+            {% if slot.allow_daily == True %}
+            <strong>{{slot.daily_cost}} Tk.</strong><span class="mx-1">/</span>day
+            {% endif %}
+          </div>
+          <div class="rent-price">
+            {% if slot.allow_monthly == True %}
+            <strong>{{slot.monthly_cost}} Tk.</strong><span class="mx-1">/</span>month
+            {% endif %}
+          </div>
+
+          <div class="d-block d-md-flex mb-3 border-bottom pb-3">
+            <div class=" border-2 rounded-md p-1 m-1">
+              <span><i class="fa fa-car" aria-hidden="true"></i></span>
+              <span class="caption">Car slots:</span>
+              <span class="number">{{slot.car_slot}}</span>
+            </div>
+            <div class=" border-2 rounded-md p-1 m-1">
+              <span><i class="fa fa-motorcycle" aria-hidden="true"></i></span>
+              <span class="caption">Bike slots:</span>
+              <span class="number">{{slot.bike_slot}}</span>
+            </div>
+            <div class=" border-2 rounded-md p-1 m-1">
+              <span><i class="fa fa-bicycle" aria-hidden="true"></i></span>
+              <span class="caption">Bicycle slots:</span>
+              <span class="number">{{slot.bicycle_slot}}</span>
+            </div>
+          </div>
+          <div>
+            <p class="font-semibold text-lg">Place type:</p>
+            <p>{{slot.place_category}}</p>
+            <hr>
+            <div class="text-md font-semibold text-green-600 p-1 text-center">
+              <span>Openning:</span>
+              <span class="text-slate-800">{{slot.opening_time}}</span>
+              <br>
+              <span>Clossing:</span>
+              <span class="text-slate-800">{{slot.close_time}}</span>
+            </div>
+            <hr>
+            <div>
+              <p class="font-semibold p-1 mx-2">Facilities:</p>
+              {% if slot.CCTV %}
+              <span class="p-1 mx-2">CCTV</span>
+              {% endif %}
+              {% if slot.Gaurd %}
+              <span class="p-1 mx-2">Gaurd</span>
+              {% endif %}
+              {% if slot.Indoor %}
+              <span class="p-1 mx-2">Indoor Garage</span>
+              {% endif %}
+            </div>
+            <hr>
+
+            <div class="mt-8 flex justify-start items-center">
+              <p><a href="{% url 'slotDetail' slot.id %}" class="btn btn-primary btn-sm">View Detail</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--test end-->
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% else %}
+
+<p class="mx-auto p-4 font-semibold text-red-400 text-center text-2xl">No Parking available in this location!</p>
+<br>
+{% endif %}
+
+<p class="mx-auto p-4 font-semibold text-black text-xl text-center">Other places you may like:</p>
+
+<div class="p-3 m-auto">
+      {% if relatedResult %}
+    <div class="row m-4">
+      {% for slot in relatedResult %}
+      <div class="col-lg-4 col-md-6 col-xl-3 col-sm-12">
+        <!--test start-->
+        <div class="max-w-xs rounded-lg overflow-hidden shadow-lg m-2">
+          <img class="w-full h-64 object-cover object-center" src="{{slot.photo.url}}" alt="Sunset in the mountains">
+          <i class="fa fa-star" aria-hidden="true"></i>
+          <span>Rating:{{slot.avgRating}} </span>
+          <span> ({{slot.ratingCount}}) </span>
+
+          <div class="px-6 py-4">
+            <div class="font-bold text-xl mb-2">{{slot.garage_name}}</div>
+            <p class="font-semibold">Location:</p>
+            <p>{{slot.location}}, {{slot.locality}}, {{slot.locality.division}} </p>
+            <p class="font-semibold text-lg ">Pricing</p>
+            <div class="rent-price">
+              {% if slot.allow_hourly == True %}
+              <strong>{{slot.hourly_cost}} Tk.</strong><span class="mx-1">/</span>hour
+              {% endif %}
+            </div>
+            <div class="rent-price">
+              {% if slot.allow_daily == True %}
+              <strong>{{slot.daily_cost}} Tk.</strong><span class="mx-1">/</span>day
+              {% endif %}
+            </div>
+            <div class="rent-price">
+              {% if slot.allow_monthly == True %}
+              <strong>{{slot.monthly_cost}} Tk.</strong><span class="mx-1">/</span>month
+              {% endif %}
+            </div>
+
+            <div class="d-block d-md-flex mb-3 border-bottom pb-3">
+              <div class=" border-2 rounded-md p-1 m-1">
+                <span><i class="fa fa-car" aria-hidden="true"></i></span>
+                <span class="caption">Car slots:</span>
+                <span class="number">{{slot.car_slot}}</span>
+              </div>
+              <div class=" border-2 rounded-md p-1 m-1">
+                <span><i class="fa fa-motorcycle" aria-hidden="true"></i></span>
+                <span class="caption">Bike slots:</span>
+                <span class="number">{{slot.bike_slot}}</span>
+              </div>
+              <div class=" border-2 rounded-md p-1 m-1">
+                <span><i class="fa fa-bicycle" aria-hidden="true"></i></span>
+                <span class="caption">Bicycle slots:</span>
+                <span class="number">{{slot.bicycle_slot}}</span>
+              </div>
+            </div>
+            <div>
+              <p class="font-semibold text-lg">Place type:</p>
+              <p>{{slot.place_category}}</p>
+              <hr>
+              <div class="text-md font-semibold text-green-600 p-1 text-center">
+                <span>Openning:</span>
+                <span class="text-slate-800">{{slot.opening_time}}</span>
+                <br>
+                <span>Clossing:</span>
+                <span class="text-slate-800">{{slot.close_time}}</span>
+              </div>
+              <HR>
+              </HR>
+              <div>
+                <p class="font-semibold p-1 mx-2">Facilities:</p>
+                {% if slot.CCTV %}
+                <span class="p-1 mx-2">CCTV</span>
+                {% endif %}
+                {% if slot.Gaurd %}
+                <span class="p-1 mx-2">Gaurd</span>
+                {% endif %}
+                {% if slot.Indoor %}
+                <span class="p-1 mx-2">Indoor Garage</span>
+                {% endif %}
+              </div>
+              <hr>
+
+              <div class="mt-8 flex justify-start items-center">
+                <p><a href="{% url 'slotDetail' slot.id %}" class="btn btn-primary btn-sm">View Detail</a></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--test end-->
+      </div>
+      {% endfor %}
+    </div>
+      {% endif %}
+</div>
+
+
+</div>
+</div>
+{% endblock base %}

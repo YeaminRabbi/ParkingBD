@@ -1,0 +1,32 @@
+{% extends 'ParkingBD/base.html' %}
+{% block title %}
+Booking Accept
+{% endblock title %}
+{% block base %}
+<center>
+    <p class="text-xl font-semibold m-4">
+        Accept Booking:
+    </p>
+</center>
+{% if user.is_authenticated %}
+
+
+<center>
+<form method="post" class="border-4 p-4 m-4 rounded-xl shadow-lg w-10/12 max-w-[22rem]">
+   {% csrf_token %}
+  
+   
+    <label class="text-2xl" for="">Are you sure you want to accept this request?</label>
+    <ul class="text-green-500 text-left">
+        <li>1. One slot of requested catagory would be decreased</li>
+        <li>2. Slot would be free when the contact would be completed</li>    
+    <p><input hidden="true" class="form-control" id="id_status" name="status" required="" type="number" value="1"></p>
+    <br>
+    <input class="btn btn-success" type="submit" value="Accept">
+    </form>
+</center>
+{% else %}
+{% include 'ParkingBD/loginRequest.html'%}
+{% endif %}
+
+{% endblock base %}

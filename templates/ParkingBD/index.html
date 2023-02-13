@@ -1,0 +1,333 @@
+{% extends 'ParkingBD/base.html' %}
+{% load static %}
+{% block title %}Home{% endblock %}
+{% block base %}
+
+<!-- Dependend dropdown script -->
+<script>
+  $(document).ready(function () {
+    var $division = $('#division'),
+      $locality = $('#locality'),
+      $options = $locality.find('option');
+    $division.on('change', function () {
+      $locality.html($options.filter('[value="' + this.value + '"]'));
+    }).trigger('change');
+  });
+</script>
+<script>
+  $(document).ready(function () {
+    $("division").locality({});
+    $("locality").locality({});
+  });
+</script>
+<!-- end of dropdown script -->
+
+
+
+<div class="site-wrap" id="home-section">
+
+  <div class="hero" style="background-image: url('../media/images/hero_1_a.jpg');">
+
+    <div class="container">
+      <div class="row align-items-center justify-content-center">
+        <div class="col-lg-10">
+
+          <div class="row mb-5">
+            <div class="col-lg-7 intro">
+              <h1><strong>Book a Garage</strong> is within your finger tips.</h1>
+            </div>
+          </div>
+
+          <form class="trip-form">
+<center>
+<p class="btn btn-lg active btn-block p-4">Search for Parking lot around your place!</p>
+              <div class="">
+                <a class="btn btn-info btn-lg" href="{% url 'slotSearch' %}">
+                  Search Now
+                </a>
+                </div>
+            </div>
+          </center>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="site-section">
+  <div class="container">
+    <h2 class="section-heading"><strong>How it works?</strong></h2>
+    <p class="mb-5">Easy steps to get you started</p>
+
+    <div class="row mb-5">
+      <div class="col-lg-4 mb-4 mb-lg-0">
+        <div class="step">
+          {% comment %} <span>1</span> {% endcomment %}
+          <div class="step-inner">
+            <span class="number text-primary h4">1</span>
+            <h3>Select a Garage</h3>
+            <p>Simply search for empty slot for your vehicle from our app!</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 mb-4 mb-lg-0">
+        <div class="step">
+          {% comment %} <span>2</span> {% endcomment %}
+          <div class="step-inner">
+            <span class="number text-primary h4">2</span>
+            <h3>Fill up form</h3>
+            <p>Fill some information about your vehicle</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 mb-4 mb-lg-0">
+        <div class="step">
+          {% comment %} <span>3</span> {% endcomment %}
+          <div class="step-inner">
+            <span class="number h4 text-primary">3</span>
+            <h3>Contact the owner</h3>
+            <p>You can directly book a slot from our website or contact the owner of the parking lot</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- promo section -->
+<div class="site-section">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-7 text-center order-lg-2">
+        <div class="img-wrap-1 mb-5">
+          <img src="../media/images/feature_01.png" alt="Image" class="img-fluid">
+        </div>
+      </div>
+      <div class="col-lg-4 ml-auto order-lg-1">
+        <h3 class="mb-4 section-heading"><strong>You can easily avail our promo for booking a parking slot.</strong>
+        </h3>
+        <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae, explicabo iste a labore
+          id est quas, doloremque veritatis! Provident odit pariatur dolorem quisquam, voluptatibus voluptates optio
+          accusamus, vel quasi quidem!</p>
+
+        <p><a href="{% url 'slotSearch' %}" class="btn btn-primary">Meet them now</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="site-section bg-light">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-7">
+        <h2 class="section-heading"><strong>Find Patking lots</strong></h2>
+        <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row m-4">
+  {% for slot in slots %}
+  <div class="col-lg-4 col-md-4 col-xl-3 col-sm-6 mx-auto">
+    <!--test start-->
+    <div class="max-w-xs rounded-lg overflow-hidden shadow-lg m-2">
+      <img class="w-full h-64 object-cover object-center" src="{{slot.photo.url}}" alt="Sunset in the mountains">
+      <div class="px-6 py-4">
+
+        <i class="fa fa-star" aria-hidden="true"></i>
+            <span>Rating:{{slot.avgRating}} </span>
+            <span> ({{slot.ratingCount}}) </span>
+
+
+        <div class="font-bold text-xl mb-2">{{slot.garage_name}}</div>
+        <p class="font-semibold">Location:</p>
+        <p>{{slot.location}}, {{slot.locality}}, {{slot.locality.division}} </p>
+        <p class="font-semibold text-lg ">Pricing</p>
+        <div class="rent-price">
+          {% if slot.allow_hourly == True %}
+          <strong>{{slot.hourly_cost}} Tk.</strong><span class="mx-1">/</span>hour
+          {% endif %}
+        </div>
+        <div class="rent-price">
+          {% if slot.allow_daily == True %}
+          <strong>{{slot.daily_cost}} Tk.</strong><span class="mx-1">/</span>day
+          {% endif %}
+        </div>
+        <div class="rent-price">
+          {% if slot.allow_monthly == True %}
+          <strong>{{slot.monthly_cost}} Tk.</strong><span class="mx-1">/</span>month
+          {% endif %}
+        </div>
+
+        <div class="d-block d-md-flex mb-3 border-bottom pb-3">
+          <div class=" border-2 rounded-md p-1 m-1">
+            <span><i class="fa fa-car" aria-hidden="true"></i></span>
+            <span class="caption">Car slots:</span>
+            <span class="number">{{slot.car_slot}}</span>
+          </div>
+          <div class=" border-2 rounded-md p-1 m-1">
+            <span><i class="fa fa-motorcycle" aria-hidden="true"></i></span>
+            <span class="caption">Bike slots:</span>
+            <span class="number">{{slot.bike_slot}}</span>
+          </div>
+          <div class=" border-2 rounded-md p-1 m-1">
+            <span><i class="fa fa-bicycle" aria-hidden="true"></i></span>
+            <span class="caption">Bicycle slots:</span>
+            <span class="number">{{slot.bicycle_slot}}</span>
+          </div>
+        </div>
+        <div>
+          <p class="font-semibold text-lg">Place type:</p>
+          <p>{{slot.place_category}}</p>
+          <hr>
+          <div class="text-md font-semibold text-green-600 p-1 text-center">
+            <span>Openning:</span>
+            <span class="text-slate-800">{{slot.opening_time}}</span>
+            <br>
+            <span>Clossing:</span>
+            <span class="text-slate-800">{{slot.close_time}}</span>
+          </div>
+          <HR>
+          </HR>
+          <div>
+            <p class="font-semibold p-1 mx-2">Facilities:</p>
+            {% if slot.CCTV %}
+            <span class="p-1 mx-2">CCTV</span>
+            {% endif %}
+            {% if slot.Gaurd %}
+            <span class="p-1 mx-2">Gaurd</span>
+            {% endif %}
+            {% if slot.Indoor %}
+            <span class="p-1 mx-2">Indoor Garage</span>
+            {% endif %}
+          </div>
+          <hr>
+
+          <div class="mt-8 flex justify-start items-center">
+            <p><a href="{% url 'slotDetail' slot.id %}" class="btn btn-primary btn-sm">View Detail</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--test end-->
+  </div>
+  {% endfor %}
+</div>
+
+
+
+
+<!-- features --> 
+<div class="site-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-7">
+        <h2 class="section-heading"><strong>Features</strong></h2>
+        <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-4 mb-5">
+        <div class="service-1 dark">
+          <span class="service-1-icon">
+            <span class="icon-home"></span>
+          </span>
+          <div class="service-1-contents">
+            <h3>Lorem ipsum dolor</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati, laboriosam.</p>
+            <p class="mb-0"><a href="#">Learn more</a></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 mb-5">
+        <div class="service-1 dark">
+          <span class="service-1-icon">
+            <span class="icon-gear"></span>
+          </span>
+          <div class="service-1-contents">
+            <h3>Lorem ipsum dolor</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati, laboriosam.</p>
+            <p class="mb-0"><a href="#">Learn more</a></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 mb-5">
+        <div class="service-1 dark">
+          <span class="service-1-icon">
+            <span class="icon-watch_later"></span>
+          </span>
+          <div class="service-1-contents">
+            <h3>Lorem ipsum dolor</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati, laboriosam.</p>
+            <p class="mb-0"><a href="#">Learn more</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4 mb-5">
+        <div class="service-1 dark">
+          <span class="service-1-icon">
+            <span class="icon-verified_user"></span>
+          </span>
+          <div class="service-1-contents">
+            <h3>Lorem ipsum dolor</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati, laboriosam.</p>
+            <p class="mb-0"><a href="#">Learn more</a></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 mb-5">
+        <div class="service-1 dark">
+          <span class="service-1-icon">
+            <span class="icon-video_library"></span>
+          </span>
+          <div class="service-1-contents">
+            <h3>Lorem ipsum dolor</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati, laboriosam.</p>
+            <p class="mb-0"><a href="#">Learn more</a></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 mb-5">
+        <div class="service-1 dark">
+          <span class="service-1-icon">
+            <span class="icon-vpn_key"></span>
+          </span>
+          <div class="service-1-contents">
+            <h3>Lorem ipsum dolor</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati, laboriosam.</p>
+            <p class="mb-0"><a href="#">Learn more</a></p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="site-section bg-primary py-5">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-7 mb-4 mb-md-0">
+        <h2 class="mb-0 text-white">What are you waiting for?</h2>
+        <p class="mb-0 opa-7">Hurry up and book a parking lot at anywhere your want! </p>
+      </div>
+      <div class="col-lg-5 text-md-right">
+        <a href="{% url 'slotSearch' %}" class="btn btn-primary btn-white">Book a Garage Now!</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+
+
+{% endblock base %}

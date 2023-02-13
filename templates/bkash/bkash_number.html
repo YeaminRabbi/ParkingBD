@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}
+Bkash number
+{% endblock title %}
+{% load static %}
+{% block base %}
+
+<div class="relative text-black w-[379px] mx-auto block">
+    <img class="m-auto" src="{% static 'images/bkashImages/bkashNumber.png' %}">
+
+    <h1 class="absolute text-lg top-[16.2rem] left-[5.5rem] w-[15rem] m-auto ">
+    <input type="text" placeholder="e.g. o1XXXXXXXXX" name="bkashNumber" class="text-center ">    
+    </h1>
+
+    <h3 class="absolute text-xl  top-[8.2rem] left-[20rem]">
+        <p>{{amount}}</p>
+        {% comment %} {{booking.id}} {% endcomment %}
+    </h3>
+
+    <a href="{% url 'pin' tid %}" type="submit" class="absolute text-lg text-black font-semibold  bottom-[3rem] right-[4rem]">CONFIRM</a> 
+    <a href="{% url 'all_bookings' %}" class="absolute text-lg text-white font-semibold  bottom-[3rem] left-[4rem]">CANCEL</a>
+
+</div>
+
+{% endblock base %}

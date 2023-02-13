@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}
+PIN
+{% endblock title %}
+{% load static %}
+{% block base %}
+<div class="relative text-black w-[379px] mx-auto block">
+    <img class="m-auto" src="{% static 'images/bkashImages/bkashPIN.png' %}">
+    <h1 class="absolute top-[18.8rem] left-[6rem] w-[15rem] m-auto ">
+    <input class="text-center text-xl" type="password" placeholder="ENTER PIN">    
+    </h1>
+    <h3 class="absolute text-xl  top-[8rem] left-[18rem]">{{amount}}Tk</h3>
+    <a href="{% url 'bkashSuccess' tid %}" class="absolute text-lg text-black font-semibold  bottom-[4.4rem] right-[4rem]">CONFIRM</a>
+    <a href="{% url 'all_bookings' %}" class="absolute text-lg text-white font-semibold  bottom-[4.4rem] left-[4rem]">CANCEL</a>
+</div>
+
+{% endblock base %}

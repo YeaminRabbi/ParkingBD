@@ -1,0 +1,35 @@
+{% extends 'ParkingBD/base.html' %}
+{% block title %}
+Slot Delete
+{% endblock title %}
+{% block base %}
+<center>
+    <p class="text-xl font-semibold m-4">
+        Delete Slot:
+    </p>
+</center>
+{% if user.is_authenticated %}
+
+
+{% if slot.owner.id == user.id %}
+
+<form method="post">
+    {% csrf_token %}
+    <div class="m-auto text-red-500 font-semibold rouded-xl border-4 shadow-lg text-center w-10/12 max-w-[20rem] p-4">
+        <p>Are you sure you want Delete this Slot post?</p>
+        <br>
+        <p>All the data related to this post would be deleted!</p> 
+        <br>
+        <input class="text-white font-semi-bold p-1 m-2 px-3 rounded-md m-auto bg-red-500" type="submit" value="Delete">
+        <br>
+    </div>
+</form>
+{% else %}
+<center>
+    <p class='text-red-500'>This page doesn't belong to you</p>
+</center>
+{% endif %}
+{% else %}
+{% include 'ParkingBD/loginRequest.html'%}
+{% endif %}
+{% endblock base %}

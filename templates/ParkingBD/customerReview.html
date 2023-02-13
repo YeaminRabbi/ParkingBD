@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}leave a review{% endblock title %}
+{% block base %}
+
+{% if user.is_authenticated %}
+<div class="m-auto border-4 rounded-xl p-4 sm:w-8/12 xl:w-6/12 2xl:w-6/12  md:w-6/12">
+    <img class="w-full h-64 object-cover object-center" src="{{slot.photo.url}}" alt="Sunset in the mountains">
+    <div class="font-bold text-xl mb-2">{{slot.garage_name}}</div>
+    <p class="font-semibold">Location:</p>
+    <p>{{slot.location}}, {{slot.locality}}, {{slot.locality.division}} </p>
+    <br>
+    <br>
+    <div class="form-group">
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <p>
+                    <select hidden="true" id="id_garage" name="garage" required="">
+                        <option selected="" value="{{slot.id}}"></option>
+                    </select>
+                </p>
+                <p>
+                    <select hidden="true" id="id_customer" name="customer" required="">
+                        <option selected="" value="{{user.id}}"></option>
+                    </select>
+                </p>
+                <p>
+                    <label class="font-semibold" for="id_review">Review:</label><br>
+                    <input class="border-2 rounded-md w-full h-24" id="id_review" maxlength="500" name="review" type="text">
+            </p>
+            <br>
+            <p>
+            <label class="font-semibold" for="id_rating">Rating:</label>
+            <br>
+<div class="text-sm">     
+            <label>
+                <input   type="radio" name="rating" value="1">  <i class="fa fa-sm fa-star" aria-hidden="true"></i>
+            </label>
+            <br>
+            <label>
+                <input  type="radio" name="rating" value="2"> <i class="fa fa-sm fa-star" aria-hidden="true"></i><i class="fa fa-sm fa-star" aria-hidden="true"></i>
+            </label>
+            <br>
+            <label>
+                <input   type="radio" name="rating" value="3"> <i class="fa fa-sm fa-star" aria-hidden="true"></i><i class="fa fa-sm fa-star" aria-hidden="true"></i><i class="fa fa-sm fa-star" aria-hidden="true"></i>
+            </label>
+            <br>
+            <label>
+                <input   type="radio" name="rating" value="4"> <i class="fa fa-sm fa-star" aria-hidden="true"></i><i class="fa fa-sm fa-star" aria-hidden="true"></i><i class="fa fa-sm fa-star" aria-hidden="true"></i><i class="fa fa-sm fa-star" aria-hidden="true"></i>
+            </label>
+            <br>
+            <label>
+                <input   type="radio" name="rating" value="5"> <i class="fa fa-sm fa-star" aria-hidden="true"></i><i class="fa fa-sm fa-star" aria-hidden="true"></i><i class="fa fa-sm fa-star" aria-hidden="true"></i><i class="fa fa-sm fa-star" aria-hidden="true"></i><i class="fa fa-sm fa-star" aria-hidden="true"></i>
+            </label>
+        </div>
+            </p>
+            </div>
+<input  class="text-blue-500 text-center font-semibold p-2 m-2 shadow-md border-2 rounded-md hover:bg-blue-500 hover:text-white duration-200 cursor-pointer" type="submit" value="submit" >
+        </form>
+    </div>
+</div>
+    {% else %}
+    {% include 'ParkingBD/loginRequest.html'%}
+    {% endif %}
+{% endblock base %}

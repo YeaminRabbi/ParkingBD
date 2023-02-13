@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+Payment
+{% endblock title %}
+{% block base %}
+<div class="text-center">
+<p>Total Amount: {{amount}} Tk</p>
+<p class="text-xl font-semibold">Cash on delivery:</p>
+<br><br>
+    <div class="w-8/12 shadow-xl p-4 border-2 rounded-xl m-auto">
+        Make sure you pay the garage owner when park your car in the desired garage.
+    </div>
+<br><br>
+    <a href="{% url 'all_bookings' %}" class="btn btn-success">
+        Back to Order
+    </a>
+</form>
+
+
+
+
+{% endblock base %}

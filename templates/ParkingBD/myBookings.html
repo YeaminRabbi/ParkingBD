@@ -1,0 +1,147 @@
+{% extends 'ParkingBD/base.html' %}
+{% block title %}
+My Bookings
+{% endblock title %}
+{% block base %}
+
+    <center>
+        <p class="text-xl">My Bookings:</p>
+    </center>
+
+    {% if user.is_authenticated %}
+
+    {% if myBooking %}
+    <div class="row m-4">
+        {% for slot in myBooking %}
+
+        <div class="col-lg-4 col-md-6 col-xl-3 col-sm-12">
+            <!--test start-->
+            <div class="max-w-xs rounded-lg overflow-hidden shadow-lg m-2">
+                <img class="w-full h-64 object-cover object-center" src="{{slot.garage.photo.url}}"
+                    alt="Sunset in the mountains">
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <span>Rating:{{slot.garage.avgRating}} </span>
+                    <span> ({{slot.garage.ratingCount}}) </span>
+        
+                <div class="px-6 py-4">
+                    <div class="font-bold text-xl mb-2">{{slot.garage.garage_name}}</div>
+                    <p class="font-semibold">Location:</p>
+                    <p>{{slot.garage.location}}, {{slot.garage.locality}}, {{slot.garage.locality.division}} </p>
+                    <p class="font-semibold text-lg ">Pricing</p>
+                    <div class="rent-price">
+                        {% if slot.garage.allow_hourly == True %}
+                        <strong>{{slot.garage.hourly_cost}} Tk.</strong><span class="mx-1">/</span>hour
+                        {% endif %}
+                      </div>
+                      <div class="rent-price">
+                        {% if slot.garage.allow_daily == True %}
+                        <strong>{{slot.garage.daily_cost}} Tk.</strong><span class="mx-1">/</span>daily
+                        {% endif %}
+                      </div>
+                      <div class="rent-price">
+                        {% if slot.garage.allow_monthly == True %}
+                        <strong>{{slot.garage.monthly_cost}} Tk.</strong><span class="mx-1">/</span>month
+                        {% endif %}
+                      </div>
+
+
+                    <div class="d-block d-md-flex mb-3 border-bottom pb-3">
+                        <div class=" border-2 rounded-md p-1 m-1">
+                            <span><i class="fa fa-car" aria-hidden="true"></i></span>
+                            <span class="caption">Car slot:</span>
+                            <span class="number">{{slot.garage.car_slot}}</span>
+                        </div>
+                        <div class=" border-2 rounded-md p-1 m-1">
+                            <span><i class="fa fa-motorcycle" aria-hidden="true"></i></span>
+                            <span class="caption">Bike slot:</span>
+                            <span class="number">{{slot.garage.bike_slot}}</span>
+                        </div>
+                        <div class=" border-2 rounded-md p-1 m-1">
+                            <span><i class="fa fa-bicycle" aria-hidden="true"></i></span>
+                            <span class="caption">Bicycle slot:</span>
+                            <span class="number">{{slot.garage.bicycle_slot}}</span>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-lg">Place type:</p>
+                        <p>{{slot.garage.place_category}}</p>
+                        <hr>
+                        <div class="text-md font-semibold text-green-600 p-1 text-center">
+                            <span>Openning:</span>
+                            <span class="text-slate-800">{{slot.garage.opening_time}}</span>
+                            <br>
+                            <span>Clossing:</span>
+                            <span class="text-slate-800">{{slot.garage.close_time}}</span>
+                        </div>
+                        <HR>
+                        </HR>
+                        <div>
+                            <p class="font-semibold p-1 mx-2">Facilities:</p>
+                            {% if slot.garage.CCTV %}
+                            <span class="p-1 mx-2">CCTV</span>
+                            {% endif %}
+                            {% if slot.garage.Gaurd %}
+                            <span class="p-1 mx-2">Gaurd</span>
+                            {% endif %}
+                            {% if slot.garage.Indoor %}
+                            <span class="p-1 mx-2">Indoor Garage</span>
+                            {% endif %}
+                        </div>
+                        <hr>
+
+                        <div class="mt-8 flex justify-start items-center">
+                            <div class="m-auto  rounded-md p-1 text-center">
+                                {% if slot.status == 0 %}
+                                <p class="text-red-500">
+                                    Booking Pending
+                                </p>
+                                <button class="btn btn-danger"><a href="{% url 'cancelBooking' slot.pk %}">Cancel</a></button>
+                                {% elif slot.status == 1 %}
+                                <p class="text-blue-500">
+                                    Booking Request Accepted
+                                </p>
+                                <br>
+                                <a href="{% url 'bkashHome' slot.id %}" class="text-blue-500 text-xl text-center font-semibold p-2 m-4 shadow-md border-2 rounded-md hover:bg-blue-500 hover:text-white duration-200 cursor-pointer">
+                                    Payment
+                                </a>
+                                {% elif slot.status == 3 %}
+                                <p class="text-green-500">
+                                    Booking completed
+                                </p>
+                                
+                                <button class="text-blue-500 text-xl text-center font-semibold p-2 m-2 shadow-md border-2 rounded-md hover:bg-blue-500 hover:text-white duration-200 cursor-pointer">
+                                    <a href="{% url 'customerReview' slot.id %}">
+                                    Leave a review
+                                    </a>
+                                </button>
+                                <button class="text-red-500 text-xl text-center font-semibold p-2 m-2 shadow-md border-2 rounded-md hover:bg-red-500 hover:text-white duration-200 cursor-pointer">
+                                    <a href="{% url 'cancelReview' slot.id %}">
+                                    confirm without review
+                                    </a>
+                                </button>
+                                {% endif %}
+                                <br>
+                                <br>
+                                <p><a href="{% url 'bookingDetail' slot.id %}" class="btn btn-primary btn-sm">View Detail</a></p>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--test end-->
+        </div>
+
+        {% endfor %}
+    </div>
+    {% else %}
+    <center>
+        <p>No records yet</p>
+    </center> 
+    {% endif %}
+    
+
+{% else %}
+{% include 'ParkingBD/loginRequest.html'%}
+{% endif %}
+{% endblock base %}

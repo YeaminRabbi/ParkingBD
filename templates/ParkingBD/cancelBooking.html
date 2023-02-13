@@ -1,0 +1,29 @@
+{% extends 'ParkingBD/base.html' %}
+{% block title %}
+Cancel Booking
+{% endblock title %}
+{% block base %}
+<center>
+    <p class="text-xl font-semibold m-4">
+        Cancel Booking:
+    </p>
+</center>
+{% if user.is_authenticated %}
+
+
+<center>
+<form method="post" class="border-4 p-4 m-4 rounded-xl shadow-lg w-10/12 max-w-[22rem]">
+   {% csrf_token %}
+  
+    <label class="text-2xl" for="id_status">Are you sure you want to cancel this request?</label>
+    
+    <p><input hidden="true" class="form-control" id="id_status" name="status" required="" type="number" value="4"></p>
+    <br>
+    <input class="btn btn-danger" type="submit" value="Cancel Booking">
+    </form>
+</center>
+{% else %}
+{% include 'ParkingBD/loginRequest.html'%}
+{% endif %}
+
+{% endblock base %}
